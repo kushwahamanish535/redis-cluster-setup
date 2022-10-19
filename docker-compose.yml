@@ -1,0 +1,50 @@
+==========Atleast 6 container is required to create master-salve replecation for three servers==========
+
+
+version: '3'
+
+services:
+  matrix-redis-0:
+    container_name: matrix-redis-0
+    image: docker.io/bitnami/redis-cluster:7.0
+    network_mode: "host"
+    #    command: redis-cli -a bitnami --cluster create redis-node-0:6379 redis-node-1:6379 redis-node-2:6379
+    extra_hosts:
+      redis-node-0: 10.127.196.98
+      redis-node-1: 10.127.196.213
+      redis-node-2: 10.127.196.154
+      
+    environment:
+      - 'REDIS_NODES=redis-node-0 redis-node-1 redis-node-2'
+      - 'REDIS_PASSWORD=bitnami'
+      
+
+  matrix-redis-1:
+    container_name: matrix-redis-1
+    image: docker.io/bitnami/redis-cluster:7.0
+    network_mode: "host"
+    #    command: redis-cli -p 6376 --cluster create matrix-redis-2 matrix-redis-3 --cluster-yes
+    extra_hosts:
+      redis-node-0: 10.127.196.98
+      redis-node-1: 10.127.196.213
+      redis-node-2: 10.127.196.154
+    environment:
+      - 'REDIS_NODES=redis-node-0 redis-node-1 redis-node-2'
+      - 'REDIS_PASSWORD=bitnami'
+      - 'REDIS_PORT_NUMBER=6378'
+      
+  matrix-redis-2:
+    container_name: matrix-redis-2
+    image: docker.io/bitnami/redis-cluster:7.0
+    network_mode: "host"
+    #    command: redis-cli -p 6376 --cluster create matrix-redis-2 matrix-redis-3 --cluster-yes
+    extra_hosts:
+      redis-node-0: 10.127.196.98
+      redis-node-1: 10.127.196.213
+      redis-node-2: 10.127.196.154
+    environment:
+      - 'REDIS_NODES=redis-node-0 redis-node-1 redis-node-2'
+      - 'REDIS_PASSWORD=bitnami'
+      - 'REDIS_PORT_NUMBER=6378'
+      
+                                                          
